@@ -7,4 +7,4 @@ https://weatherwebagain.netlify.app
 
 
 ## Technology Used
-`HTML5, CSS, JavaScript, Rapid API'
+`HTML5, CSS, JavaScript, Rapid API`
