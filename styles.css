@@ -241,3 +241,20 @@ h1 {
 .citynotfound{
     position: absolute;
 }
+
+
+
+@media only screen and (max-width: 580px) {
+    .parameter-container{
+        width: 100%;
+        flex-direction: column;
+        padding-bottom: 2rem;
+        background-color: #2e66a6;
+        padding-top: 2rem;
+        border-top: 2px solid white;
+    }
+    .parameter{
+        width:100%;
+        
+    }  
+}

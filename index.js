@@ -27,6 +27,7 @@ function switchTab(newTab) {
         }
         else {
             //main pehle search wale tab pr tha, ab your weather tab visible karna h 
+            errorHandlerimg.classList.remove("active");
             searchForm.classList.remove("active");
             userInfoContainer.classList.remove("active");
             //ab main your weather tab me aagya hu, toh weather bhi display karna poadega, so let's check local storage first
@@ -161,8 +162,6 @@ async function fetchSearchWeatherInfo(city) {
           );
         const data = await response.json();
         if(data.cod==='404'){
-            console.log("Ab to karna padega kand")
-            // throw new Error("Falut hai Bhai");
             loadingScreen.classList.remove("active");
             errorHandlerimg.classList.add('active');
         }
