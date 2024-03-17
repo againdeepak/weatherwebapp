@@ -6,8 +6,7 @@ const grantAccessContainer = document.querySelector(".grant-location-container")
 const searchForm = document.querySelector("[data-searchForm]");
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user-info-container");
-
-//initially vairables need????
+const errorHandlerimg=document.querySelector('.errorHandlerimg');
 
 let oldTab = userTab;
 const API_KEY = "d1845658f92b31c64bd94f06f7188c9c";
@@ -21,7 +20,7 @@ function switchTab(newTab) {
         oldTab.classList.add("current-tab");
 
         if(!searchForm.classList.contains("active")) {
-            //kya search form wala container is invisible, if yes then make it visible
+            //if invisible then do visible
             userInfoContainer.classList.remove("active");
             grantAccessContainer.classList.remove("active");
             searchForm.classList.add("active");
@@ -58,7 +57,6 @@ function getfromSessionStorage() {
         const coordinates = JSON.parse(localCoordinates);
         fetchUserWeatherInfo(coordinates);
     }
-
 }
 
 async function fetchUserWeatherInfo(coordinates) {
@@ -74,13 +72,14 @@ async function fetchUserWeatherInfo(coordinates) {
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
           );
         const  data = await response.json();
-
+        
         loadingScreen.classList.remove("active");
         userInfoContainer.classList.add("active");
         renderWeatherInfo(data);
     }
     catch(err) {
         loadingScreen.classList.remove("active");
+       
         //HW
 
     }
@@ -99,7 +98,7 @@ function renderWeatherInfo(weatherInfo) {
     const humidity = document.querySelector("[data-humidity]");
     const cloudiness = document.querySelector("[data-cloudiness]");
 
-    console.log(weatherInfo);
+    
 
     //fetch values from weatherINfo object and put it UI elements
     cityName.innerText = weatherInfo?.name;
@@ -120,6 +119,7 @@ function getLocation() {
     }
     else {
         //HW - show an alert for no gelolocation support available
+        alert("No Facilites available for Geolocation...")
     }
 }
 
@@ -143,7 +143,7 @@ const searchInput = document.querySelector("[data-searchInput]");
 searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let cityName = searchInput.value;
-
+    errorHandlerimg.classList.remove('active');
     if(cityName === "")
         return;
     else 
@@ -160,11 +160,23 @@ async function fetchSearchWeatherInfo(city) {
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
           );
         const data = await response.json();
-        loadingScreen.classList.remove("active");
-        userInfoContainer.classList.add("active");
-        renderWeatherInfo(data);
+        if(data.cod==='404'){
+            console.log("Ab to karna padega kand")
+            // throw new Error("Falut hai Bhai");
+            loadingScreen.classList.remove("active");
+            errorHandlerimg.classList.add('active');
+        }
+        else{
+            errorHandlerimg.classList.remove('active');
+            loadingScreen.classList.remove("active");
+            userInfoContainer.classList.add("active");
+            renderWeatherInfo(data);
+            console.log(data);
+            console.log(data.cod)
+        }       
+       
     }
     catch(err) {
-        //hW
+       console.log(err.message)
     }
 }
